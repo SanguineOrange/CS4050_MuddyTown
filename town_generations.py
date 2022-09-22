@@ -7,7 +7,6 @@
 
 from town import Town
 from house import house
-from paving_plan import paving_plan
 
 
 # Generates pseudorandom numbers utilizing the linear congruentional method
@@ -64,44 +63,8 @@ def read_town(filename) -> Town:
         # Add road to list
         new_road_list = [weight, house_key.index(address_x), house_key.index(address_y)]
         unpaved_list.append(new_road_list)
-    newTown = Town(town_name, unpaved_list, houses)
+    newTown = Town(town_name, unpaved_list, houses, house_key)
     return newTown
-
-
-def read_paving_plan(filename):
-    try:
-        fp = open(filename, "r")
-    except:
-        print("An error occurred opening the file\n")
-        pass
-
-    paved_roads = []
-    houses = []
-    house_key = []
-    total_cost = fp.readline()
-
-    while True:
-        read_paving = fp.readline()
-        if not read_paving:
-            break
-        read_paving = read_paving.replace('"', '')
-        read_paving = read_paving.replace("\n", '')
-        split_string = read_paving.split(", ", 1)
-
-        paved_road = [None, split_string[0], split_string[1]]
-
-        if split_string[0] not in house_key:
-            house_key.append(split_string[0])
-            houses.append(house(split_string[0]))
-
-        if split_string[1] not in house_key:
-            house_key.append(split_string[1])
-            houses.append(house(split_string[1]))
-
-        paved_roads.append(paved_road)
-
-    new_paving_plan = paving_plan(paved_roads, total_cost, houses)
-    return new_paving_plan
 
 
 # Generate arbitrary town data given a seed
@@ -110,7 +73,7 @@ def random_town(num_houses, num_roads) -> Town:
     seed = 0
 
     invalid = True
-    while (invalid):
+    while(invalid):
         houses = []
         house_key = []
         for i in range(num_roads):
@@ -147,7 +110,7 @@ def random_town(num_houses, num_roads) -> Town:
         if check_connectivity(houses):
             seed += 1
             invalid = False
-        new_random_town = Town("Random Town", unpaved_roads, houses)
+        new_random_town = Town("Random Town", unpaved_roads, houses, house_key)
 
     return new_random_town
 

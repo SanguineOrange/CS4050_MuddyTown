@@ -4,6 +4,8 @@
 
 import argparse
 import sys
+
+import town_generations
 from town_generations import *
 
 
@@ -28,14 +30,19 @@ def __main__():
                         help="creates town given number of buildings and streets")
 
     args = parser.parse_args()
+    print(argv)
 
     if len(argv) == 0:
         current_town.display_town()
         return 0
 
-    if args.r:
-        current_town = read_town(args.r)
+    if args.c:
+        current_town = random_town(args.c[0], args.c[1])
         current_town.display_town()
+    elif args.r:
+        current_town = town_generations.read_town(args.r)
+        current_town.display_town()
+
     if args.a:
         current_town.display_town_alt()
     elif args.s:
@@ -45,9 +52,6 @@ def __main__():
     elif args.w:
         current_town.write_town(args.w)
         print(args.w)
-    elif args.c:
-        current_town = random_town(args.c[0], args.c[1])
-        current_town.display_town()
 
     elif args.h:
         print('''Syntax: [-option [parameter]]
