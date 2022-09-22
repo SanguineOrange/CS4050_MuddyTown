@@ -134,7 +134,6 @@ class Town:
             read_paving = read_paving.replace("\n", '')
             split_string = read_paving.split(", ", 1)
 
-
             try:
                 index_x = self.house_key.index(split_string[0])
                 index_y = self.house_key.index(split_string[1])
@@ -148,7 +147,7 @@ class Town:
             address_y = None
             for road in self.unpaved_list:
                 if index_x == road[1] and index_y == road[2]:
-                    if lowest_weight == None or road[0] < lowest_weight:
+                    if lowest_weight is None or road[0] < lowest_weight:
                         lowest_weight = road[0]
                         address_x = road[1]
                         address_y = road[2]
@@ -172,7 +171,7 @@ class Town:
             fp = open(filename, "x")
         except FileExistsError:
             fp = open(filename, "w")
-        fp.write(self.townName + ' plan\n')
+        fp.write(self.townName + '\n')
         for road in self.paved_list:
             fp.write('"' + road[0] + '", "' +
                      road[1] + '"\n')

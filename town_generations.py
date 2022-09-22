@@ -4,6 +4,7 @@
 #       1. town generation
 #       2. Random number generation
 #       3. Validation checking
+import time
 
 from town import Town
 from house import house
@@ -70,7 +71,7 @@ def read_town(filename) -> Town:
 # Generate arbitrary town data given a seed
 def random_town(num_houses, num_roads) -> Town:
     unpaved_roads = []
-    seed = 0
+    seed = int(time.time() * 1000)
 
     invalid = True
     while(invalid):
