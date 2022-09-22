@@ -11,7 +11,6 @@ from house import house
 
 
 # Generates pseudorandom numbers utilizing the linear congruentional method
-# User can specify the seed
 def random(seed) -> int:
     modulus = 21089
     increment = 6262
@@ -40,9 +39,9 @@ def read_town(filename) -> Town:
             break
 
         # Clean the string for consumtion
-        read_road = read_road.replace('"', '')
+        read_road = read_road.replace('"','')
         read_road = read_road.replace("\n", '')
-        split_string = read_road.split(", ", 2)
+        split_string = read_road.split(",", 2)
         weight = int(split_string[0])
         address_x = split_string[1]
         address_y = split_string[2]

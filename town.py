@@ -121,10 +121,14 @@ class Town:
             fp = open(filename, "r")
         except:
             print("An error occurred opening the file\n")
-            pass
+            return
 
         paved_roads = []
         total_cost = 0
+
+        if self.townName != fp.readline().replace('\n',''):
+            print("Warning! Town data does not match paving data stored on this file! +"
+                  "\nThis might mean the paving plan is invalid!")
 
         while True:
             read_paving = fp.readline()

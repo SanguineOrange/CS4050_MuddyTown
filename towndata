@@ -1,6 +1,4 @@
-Random Town
-"4", "0 St", "1 St"
-"5", "2 St", "1 St"
-"2", "2 St", "1 St"
-"3", "0 St", "2 St"
-"7", "0 st", "3 St"
+"Mini Town"
+3,"1 First Street","2 First Street"
+2,"1 Second Street","1 First Street"
+3,"2 First Street","1 Second Street"
