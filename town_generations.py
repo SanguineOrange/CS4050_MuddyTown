@@ -117,13 +117,16 @@ def read_town(filename) -> Town:
 # Generate arbitrary town data given a seed
 def random_town(num_houses, num_roads) -> Town:
     unpaved_roads = []
+    new_houses = []
+    house_key = []
     seed = int(time.time() * 1000)
 
     invalid = True
     while invalid:
         duplicate = False
-        new_houses = []
-        house_key = []
+        new_houses.clear()
+        house_key.clear()
+        unpaved_roads.clear()
 
         # Generate a new road in [w,x,y] format
         for i in range(num_roads):
@@ -139,7 +142,6 @@ def random_town(num_houses, num_roads) -> Town:
                 if address_y != address_x:
                     break
             new_rand_road = [weight, address_x, address_y]
-            print(unpaved_roads)
             # Check if road is a duplicate
             for road in unpaved_roads:
                 if [road[1], road[2]] == [address_x, address_y] or [road[2], road[1]] == [address_x, address_y]:
@@ -164,9 +166,19 @@ def random_town(num_houses, num_roads) -> Town:
                     new_houses[index_y].add_connection(new_houses[index_x])
 
         # if town is not connected it's invalid
-        if check_connectivity(new_houses):
-            seed += 1
+        try:
+            if check_connectivity(new_houses):
+                seed += 1
+                # Was getting an out of bounds error during printing
+                # Adding a try-catch block during generation seems to have fixed it
+                for road in unpaved_roads:
+                    valid_check = ([str(road[0]),
+                          new_houses[road[1]].name,
+                          new_houses[road[2]].name ])
             invalid = False
+        except IndexError:
+            invalid = True
+
 
     new_random_town = Town("Random Town", unpaved_roads, new_houses, house_key)
     return new_random_town
