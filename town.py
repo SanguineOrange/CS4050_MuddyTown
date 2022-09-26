@@ -1,3 +1,12 @@
+# Cameron Colliver
+# Muddy Town Project v0.9
+# CS4050 Algorithms and Algorithm Analysis
+# This file contains the town object as well as methods for:
+#       1. Write/Display town in standard or alternate format
+#       2. Write/Display paving plans for a town
+#       3. Generating a paving plan from Kruskal's minimum spanning tree algorithm
+#       4. Evaluation of paving data also from Kruskal's minimum spanning tree algorithm
+
 from house import house
 
 
@@ -15,6 +24,7 @@ class Town:
         self.minimum_cost = None
         self.total_cost = None
 
+    # Display town in standard format
     def display_town(self):
         print(self.townName)
         for road in self.unpaved_list:
@@ -22,21 +32,27 @@ class Town:
                   self.houses[road[1]].name + '", "' +
                   self.houses[road[2]].name + '"')
 
+    # Display town in alternate format
     def display_town_alt(self):
-        print(self.townName)
+        print("Town: " + self.townName)
+        print("Number of buildings: " + str(len(self.houses)))
+        i = 1
         for house in self.houses:
-            print(house.name)
+            print('[' + str(i) + '] ' + house.name)
+            i += 1
         for road in self.unpaved_list:
-            print(self.houses[road[1]].name + ", " +
-                  self.houses[road[2]].name + ", " +
+            print('"' + self.houses[road[1]].name + '", ' +
+                  '"' + self.houses[road[2]].name + '", ' +
                   str(road[0]))
 
+    # Write town data to a file
     def write_town(self, filename, mode):
         try:
             fp = open(filename, "x")
         except FileExistsError:
             fp = open(filename, "w")
 
+        # If mode is default, write standard format
         if mode == 'd':
             fp.write(self.townName + '\n')
 
@@ -45,6 +61,7 @@ class Town:
                          self.houses[road[1]].name + '", "' +
                          self.houses[road[2]].name + '"\n')
 
+        # else write in alternate format
         elif mode == 'a':
             fp.write("Town: " + self.townName + '\n')
             fp.write("Number of buildings: " + str(len(self.houses)) + '\n')
@@ -58,11 +75,14 @@ class Town:
                       self.houses[road[2]].name + ", " +
                       str(road[0]) + '\n')
 
+
+    # Find root of tree, adapted from Skeina's C code
     def find(self, parent, i):
         if parent[i] == i:
             return i
         return self.find(parent, parent[i])
 
+    # Union two trees together, adapted from Skeina's C code
     def union_find(self, parent, rank, x, y):
         x_root = self.find(parent, x)
         y_root = self.find(parent, y)
@@ -74,7 +94,7 @@ class Town:
             parent[y_root] = x_root
             rank[x_root] += 1
 
-    # code for Kruskal's algorithm was adapted from Skeina's C code
+    # Kruskal's algorithm was adapted from Skeina's C code
     def kruskals_algorithm(self, overwrite):
         result = []
         total_vertices = len(self.houses)
@@ -100,6 +120,8 @@ class Town:
                 result.append([self.houses[u].name, self.houses[v].name])
                 self.union_find(parent, rank, x, y)
                 minimum_cost += weight
+
+        # If overwrite flag is on, set result as paving plan
         if overwrite:
             houses = []
             house_key = []
@@ -122,15 +144,18 @@ class Town:
                 houses[houseX].add_connection(houses[houseY])
                 houses[houseY].add_connection(houses[houseX])
             self.paved_houses = houses.copy()
+        # Else simply return the minimum cost
         else:
             return minimum_cost
 
+    # Check if currently stored plan is also the smallest according to Kruskal's
     def check_paving_plan(self):
         if self.kruskals_algorithm(False) == self.total_cost:
             return True
         else:
             return False
 
+    # Read paving plan from a file
     def read_paving_plan(self, filename):
         try:
             fp = open(filename, "r")
@@ -176,6 +201,7 @@ class Town:
         self.total_cost = total_cost
         self.paved_list = paved_roads.copy()
 
+    # Print the paving plan in standard format
     def display_paving_plan(self):
         if self.total_cost is None:
             print("Error! There is no paving data stored")
@@ -185,6 +211,7 @@ class Town:
                 print('"' + str(road[0]) + '", "' +
                       str(road[1]) + '"')
 
+    # Write the paving plan in standard format
     def write_paving_plan(self, filename):
         try:
             fp = open(filename, "x")

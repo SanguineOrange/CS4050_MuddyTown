@@ -1,5 +1,6 @@
 # Cameron Colliver
-# Muddy Town Project v0.2
+# Muddy Town Project v0.9
+# CS4050 Algorithms and Algorithm Analysis
 # This file contains all necessary functions for:
 #       1. town generation
 #       2. Random number generation
@@ -19,7 +20,7 @@ def random(seed) -> int:
     seed = (multiplier * seed + increment) % modulus
     return seed
 
-
+# Read town from a file
 def read_town(filename) -> Town:
     try:
         fp = open(filename, "r")
@@ -32,6 +33,7 @@ def read_town(filename) -> Town:
     house_key = []
     unpaved_list = []
 
+    # Check if the town is in alternate format and process it if it is
     if "Town: " in town_name:
         town_name = town_name.replace("Town: ", '')
         num_buildings = fp.readline().replace("Number of buildings: ", "")
@@ -55,6 +57,7 @@ def read_town(filename) -> Town:
             address_x = split_string[0]
             address_y = split_string[1]
 
+            # If the houses were not previously noted add them to the house list
             if address_x not in house_key:
                 houses.append(house(address_x))
                 house_key.append(address_x)
@@ -63,9 +66,9 @@ def read_town(filename) -> Town:
                 houses.append(house(address_y))
                 house_key.append(address_y)
 
+            # Add the connections to houses, this is for the BFS implementation
             house_x = house_key.index(address_x)
             house_y = house_key.index(address_y)
-
             houses[house_x].add_connection(houses[house_y])
             houses[house_y].add_connection(houses[house_x])
 
@@ -74,6 +77,7 @@ def read_town(filename) -> Town:
             unpaved_list.append(new_road_list)
 
     else:
+        # Read in a standard format file
         while True:
             read_road = fp.readline()
             if not read_road:
@@ -88,6 +92,7 @@ def read_town(filename) -> Town:
             address_x = split_string[1]
             address_y = split_string[2]
 
+            # If the houses were not previously noted add them to the house list
             if address_x not in house_key:
                 houses.append(house(address_x))
                 house_key.append(address_x)
@@ -96,9 +101,9 @@ def read_town(filename) -> Town:
                 houses.append(house(address_y))
                 house_key.append(address_y)
 
+            # Add the connections to houses, this is for the BFS implementation
             house_x = house_key.index(address_x)
             house_y = house_key.index(address_y)
-
             houses[house_x].add_connection(houses[house_y])
             houses[house_y].add_connection(houses[house_x])
 
@@ -134,7 +139,7 @@ def random_town(num_houses, num_roads) -> Town:
                 if address_y != address_x:
                     break
             new_rand_road = [weight, address_x, address_y]
-
+            print(unpaved_roads)
             # Check if road is a duplicate
             for road in unpaved_roads:
                 if [road[1], road[2]] == [address_x, address_y] or [road[2], road[1]] == [address_x, address_y]:
@@ -177,8 +182,6 @@ def check_connectivity(houses) -> bool:
 
     # Return true if town is connected
     if len(visited) == len(houses):
-        print("Valid")
         return True
     else:
-        print("Invalid")
         return False

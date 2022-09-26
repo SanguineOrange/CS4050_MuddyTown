@@ -1,12 +1,14 @@
 # Cameron Colliver
-# CS4050 Algorithms and Algorthm Analysis
 # Muddy Town Project v0.9
+# CS4050 Algorithms and Algorithm Analysis
+# This parses input on the command line and calls the necessary functions:
+
 
 import getopt
 import sys
 from town_generations import *
 
-VERSION = 0.9
+VERSION = str(0.9)
 
 def main(argsv):
     current_town = read_town("towndata")
@@ -48,7 +50,7 @@ def main(argsv):
                 current_town.write_paving_plan(currentValue)
 
             elif currentArgument in ("-v", "--Version"):
-                print("Muddytown Project <Version Num>, by Cameron Colliver")
+                print("Muddytown Project version " + VERSION + ", by Cameron Colliver")
 
             elif currentArgument in ("-h", "--Help"):
                 print('''Syntax: [-option [parameter]]
@@ -63,8 +65,8 @@ def main(argsv):
                               \tv   show version
                               \th   help (this display)''')
 
+    # Catch unexpected input and print the error
     except getopt.error as err:
-        # output error, and return with an error code
         print(str(err))
 
 
