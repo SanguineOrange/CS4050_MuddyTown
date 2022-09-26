@@ -32,8 +32,7 @@ def main(argsv):
                 current_town = read_town(currentValue)
 
             elif currentArgument in ("-w", "--Write"):
-                print("Town data to: " + str(currentValue))
-                current_town.write_town(currentValue)
+                current_town.write_town(currentValue, current_mode)
 
             elif currentArgument in ("-e", "--Read_Paving"):
                 current_town.read_paving_plan(currentValue)

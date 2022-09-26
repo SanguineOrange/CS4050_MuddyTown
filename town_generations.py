@@ -4,8 +4,8 @@
 #       1. town generation
 #       2. Random number generation
 #       3. Validation checking
-import time
 
+import time
 from town import Town
 from house import house
 
@@ -32,39 +32,81 @@ def read_town(filename) -> Town:
     house_key = []
     unpaved_list = []
 
-    while True:
-        read_road = fp.readline()
-        if not read_road:
-            fp.close()
-            break
+    if "Town: " in town_name:
+        town_name = town_name.replace("Town: ", '')
+        num_buildings = fp.readline().replace("Number of buildings: " , "")
+        num_buildings = int(num_buildings.replace('\n', ''))
 
-        # Clean the string for consumtion
-        read_road = read_road.replace('"','')
-        read_road = read_road.replace("\n", '')
-        split_string = read_road.split(",", 2)
-        weight = int(split_string[0])
-        address_x = split_string[1]
-        address_y = split_string[2]
+        # Skip the lines that are just addresses
+        for i in range(0, num_buildings, 1):
+            fp.readline()
 
-        if address_x not in house_key:
-            houses.append(house(address_x))
-            house_key.append(address_x)
+        while True:
+            read_road = fp.readline()
+            if not read_road:
+                fp.close()
+                break
 
-        if address_y not in house_key:
-            houses.append(house(address_y))
-            house_key.append(address_y)
+            # Clean the string for consumtion
+            read_road = read_road.replace('"', '')
+            read_road = read_road.replace("\n", '')
+            split_string = read_road.split(",", 2)
+            weight = int(split_string[2])
+            address_x = split_string[0]
+            address_y = split_string[1]
 
-        houseX = house_key.index(address_x)
-        houseY = house_key.index(address_y)
+            if address_x not in house_key:
+                houses.append(house(address_x))
+                house_key.append(address_x)
 
-        houses[houseX].add_connection(houses[houseY])
-        houses[houseY].add_connection(houses[houseX])
+            if address_y not in house_key:
+                houses.append(house(address_y))
+                house_key.append(address_y)
 
-        # Add road to list
-        new_road_list = [weight, house_key.index(address_x), house_key.index(address_y)]
-        unpaved_list.append(new_road_list)
-    newTown = Town(town_name, unpaved_list, houses, house_key)
-    return newTown
+            house_x = house_key.index(address_x)
+            house_y = house_key.index(address_y)
+
+            houses[house_x].add_connection(houses[house_y])
+            houses[house_y].add_connection(houses[house_x])
+
+            # Add road to list
+            new_road_list = [weight, house_key.index(address_x), house_key.index(address_y)]
+            unpaved_list.append(new_road_list)
+
+    else:
+        while True:
+            read_road = fp.readline()
+            if not read_road:
+                fp.close()
+                break
+
+            # Clean the string for consumtion
+            read_road = read_road.replace('"', '')
+            read_road = read_road.replace("\n", '')
+            split_string = read_road.split(",", 2)
+            weight = int(split_string[0])
+            address_x = split_string[1]
+            address_y = split_string[2]
+
+            if address_x not in house_key:
+                houses.append(house(address_x))
+                house_key.append(address_x)
+
+            if address_y not in house_key:
+                houses.append(house(address_y))
+                house_key.append(address_y)
+
+            house_x = house_key.index(address_x)
+            house_y = house_key.index(address_y)
+
+            houses[house_x].add_connection(houses[house_y])
+            houses[house_y].add_connection(houses[house_x])
+
+            # Add road to list
+            new_road_list = [weight, house_key.index(address_x), house_key.index(address_y)]
+            unpaved_list.append(new_road_list)
+    new_town = Town(town_name, unpaved_list, houses, house_key)
+    return new_town
 
 
 # Generate arbitrary town data given a seed
@@ -73,8 +115,8 @@ def random_town(num_houses, num_roads) -> Town:
     seed = int(time.time() * 1000)
 
     invalid = True
-    while(invalid):
-        houses = []
+    while invalid:
+        new_houses = []
         house_key = []
         for i in range(num_roads):
             seed = random(seed)
@@ -98,24 +140,24 @@ def random_town(num_houses, num_roads) -> Town:
             if new_rand_road not in unpaved_roads:
                 unpaved_roads.append(new_rand_road)
                 if address_x not in house_key:
-                    houses.append(house(str(address_x) + " St"))
+                    new_houses.append(house(str(address_x) + " St"))
                     house_key.append(address_x)
 
                 if address_y not in house_key:
-                    houses.append(house(str(address_y) + " St"))
+                    new_houses.append(house(str(address_y) + " St"))
                     house_key.append(address_y)
 
                 index_x = house_key.index(address_x)
                 index_y = house_key.index(address_y)
 
-                houses[index_x].add_connection(houses[index_y])
-                houses[index_y].add_connection(houses[index_x])
+                new_houses[index_x].add_connection(new_houses[index_y])
+                new_houses[index_y].add_connection(new_houses[index_x])
 
         # if town is not connected it's invalid
-        if check_connectivity(houses):
+        if check_connectivity(new_houses):
             seed += 1
             invalid = False
-        new_random_town = Town("Random Town", unpaved_roads, houses, house_key)
+    new_random_town = Town("Random Town", unpaved_roads, new_houses, house_key)
 
     return new_random_town
 

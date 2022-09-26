@@ -46,17 +46,17 @@ class Town:
                          self.houses[road[2]].name + '"\n')
 
         elif mode == 'a':
-            print("Name: " + self.townName)
-            print("Number of buildings: " + str(len(self.houses)))
+            fp.write("Town: " + self.townName + '\n')
+            fp.write("Number of buildings: " + str(len(self.houses)) + '\n')
 
             i = 0
             for house in self.houses:
                 i += 1
-                print("[" + str(i) + "]" + house.name)
+                fp.write("[" + str(i) + "]" + house.name + '\n')
             for road in self.unpaved_list:
-                print(self.houses[road[1]].name + ", " +
+                fp.write(self.houses[road[1]].name + ", " +
                       self.houses[road[2]].name + ", " +
-                      str(road[0]))
+                      str(road[0]) + '\n')
 
     def find(self, parent, i):
         if parent[i] == i:
