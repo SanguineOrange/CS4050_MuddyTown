@@ -34,7 +34,7 @@ def read_town(filename) -> Town:
 
     if "Town: " in town_name:
         town_name = town_name.replace("Town: ", '')
-        num_buildings = fp.readline().replace("Number of buildings: " , "")
+        num_buildings = fp.readline().replace("Number of buildings: ", "")
         num_buildings = int(num_buildings.replace('\n', ''))
 
         # Skip the lines that are just addresses
@@ -116,8 +116,11 @@ def random_town(num_houses, num_roads) -> Town:
 
     invalid = True
     while invalid:
+        duplicate = False
         new_houses = []
         house_key = []
+
+        # Generate a new road in [w,x,y] format
         for i in range(num_roads):
             seed = random(seed)
             weight = seed % (3 + num_roads)
@@ -130,35 +133,37 @@ def random_town(num_houses, num_roads) -> Town:
                 address_y = seed % num_houses
                 if address_y != address_x:
                     break
+            new_rand_road = [weight, address_x, address_y]
 
+            # Check if road is a duplicate
+            for road in unpaved_roads:
+                if [road[1], road[2]] == [address_x, address_y] or [road[2], road[1]] == [address_x, address_y]:
+                    duplicate = True
+
+            # if it isn't a duplicate, append to road list and note connection on houses
+            if not duplicate:
                 if new_rand_road not in unpaved_roads:
                     unpaved_roads.append(new_rand_road)
-                else:
-                    num_roads += 1
+                    if address_x not in house_key:
+                        new_houses.append(house(str(address_x) + " St"))
+                        house_key.append(address_x)
 
-            new_rand_road = [weight, address_x, address_y]
-            if new_rand_road not in unpaved_roads:
-                unpaved_roads.append(new_rand_road)
-                if address_x not in house_key:
-                    new_houses.append(house(str(address_x) + " St"))
-                    house_key.append(address_x)
+                    if address_y not in house_key:
+                        new_houses.append(house(str(address_y) + " St"))
+                        house_key.append(address_y)
 
-                if address_y not in house_key:
-                    new_houses.append(house(str(address_y) + " St"))
-                    house_key.append(address_y)
+                    index_x = house_key.index(address_x)
+                    index_y = house_key.index(address_y)
 
-                index_x = house_key.index(address_x)
-                index_y = house_key.index(address_y)
-
-                new_houses[index_x].add_connection(new_houses[index_y])
-                new_houses[index_y].add_connection(new_houses[index_x])
+                    new_houses[index_x].add_connection(new_houses[index_y])
+                    new_houses[index_y].add_connection(new_houses[index_x])
 
         # if town is not connected it's invalid
         if check_connectivity(new_houses):
             seed += 1
             invalid = False
-    new_random_town = Town("Random Town", unpaved_roads, new_houses, house_key)
 
+    new_random_town = Town("Random Town", unpaved_roads, new_houses, house_key)
     return new_random_town
 
 
