@@ -10,15 +10,19 @@ VERSION = 0.9
 
 def main(argsv):
     current_town = read_town("towndata")
+    current_mode = "d"
+
     try:
         arguments, values = getopt.getopt(argsv, "sac::r:w:e:p:vh")
 
         for currentArgument, currentValue in arguments:
 
             if currentArgument in ("-s", "--Standard_Out"):
+                current_mode = "d"
                 current_town.display_town()
 
             elif currentArgument in ("-a", "--Alternate_Out"):
+                current_mode = "a"
                 current_town.display_town_alt()
 
             elif currentArgument in ("-c", "--Create"):

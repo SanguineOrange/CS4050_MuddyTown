@@ -89,22 +89,27 @@ def random_town(num_houses, num_roads) -> Town:
                 if address_y != address_x:
                     break
 
+                if new_rand_road not in unpaved_roads:
+                    unpaved_roads.append(new_rand_road)
+                else:
+                    num_roads += 1
+
             new_rand_road = [weight, address_x, address_y]
-            unpaved_roads.append(new_rand_road)
+            if new_rand_road not in unpaved_roads:
+                unpaved_roads.append(new_rand_road)
+                if address_x not in house_key:
+                    houses.append(house(str(address_x) + " St"))
+                    house_key.append(address_x)
 
-            if address_x not in house_key:
-                houses.append(house(str(address_x) + " St"))
-                house_key.append(address_x)
+                if address_y not in house_key:
+                    houses.append(house(str(address_y) + " St"))
+                    house_key.append(address_y)
 
-            if address_y not in house_key:
-                houses.append(house(str(address_y) + " St"))
-                house_key.append(address_y)
+                index_x = house_key.index(address_x)
+                index_y = house_key.index(address_y)
 
-            index_x = house_key.index(address_x)
-            index_y = house_key.index(address_y)
-
-            houses[index_x].add_connection(houses[index_y])
-            houses[index_y].add_connection(houses[index_x])
+                houses[index_x].add_connection(houses[index_y])
+                houses[index_y].add_connection(houses[index_x])
 
         # if town is not connected it's invalid
         if check_connectivity(houses):

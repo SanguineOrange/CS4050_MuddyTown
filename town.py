@@ -31,17 +31,32 @@ class Town:
                   self.houses[road[2]].name + ", " +
                   str(road[0]))
 
-    def write_town(self, filename):
+    def write_town(self, filename, mode):
         try:
             fp = open(filename, "x")
         except FileExistsError:
             fp = open(filename, "w")
-        fp.write(self.townName + '\n')
 
-        for road in self.unpaved_list:
-            fp.write('"' + str(road[0]) + '", "' +
-                     self.houses[road[1]].name + '", "' +
-                     self.houses[road[2]].name + '"\n')
+        if mode == 'd':
+            fp.write(self.townName + '\n')
+
+            for road in self.unpaved_list:
+                fp.write('"' + str(road[0]) + '", "' +
+                         self.houses[road[1]].name + '", "' +
+                         self.houses[road[2]].name + '"\n')
+
+        elif mode == 'a':
+            print("Name: " + self.townName)
+            print("Number of buildings: " + str(len(self.houses)))
+
+            i = 0
+            for house in self.houses:
+                i += 1
+                print("[" + str(i) + "]" + house.name)
+            for road in self.unpaved_list:
+                print(self.houses[road[1]].name + ", " +
+                      self.houses[road[2]].name + ", " +
+                      str(road[0]))
 
     def find(self, parent, i):
         if parent[i] == i:
