@@ -10,6 +10,7 @@ from town_generations import *
 
 VERSION = str(0.9)
 
+
 def main(argsv):
     current_town = read_town("towndata")
     current_mode = "d"
