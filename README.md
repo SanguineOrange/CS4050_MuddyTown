@@ -9,29 +9,29 @@ This project solves the "muddy town" minimum spanning tree problem for either
 processtown contains the main function and has commmand line get-opt style commands
 commands should resemble ** python processtown.py -arguments** where -arguments is any combination of the following:
 
-#### **-s**
+#### -s
   Displays the town in the standard specified by the project overview
   
-#### **-a **
+#### -a 
   Displays the town in the alternate specified by the project overview
 
-#### **-r *filename* **
+#### -r *filename* 
   Reads town data in either specified standard or alternate formats to the speficied file
   
-#### **-w *filename* **
+#### -w *filename* 
    Writes town data in either specified standard or alternate formats to the specified file
    
-#### **-c *number of buildings* **
+#### -c *number of buildings* 
   Pseudorandombly generates a new arbitrary town with the specified number of buildings
   
-#### **-e *filename* **
+#### -e *filename* 
   Reads a paving plan from the specified file and evaluates it uising Kruskal's Algorithm
   
-#### **-p *filename* **
+#### -p *filename* 
   Creates a minimum cost paving plan for the stored town and writes it to the specified file
   
-#### **-v**
+#### -v
   Displays the version of this project
   
-#### **-h**
+#### -h
   Displays all commands in the terminal
