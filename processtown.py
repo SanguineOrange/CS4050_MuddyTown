@@ -1,5 +1,5 @@
 # Cameron Colliver
-# Muddy Town Project v0.9
+# Muddy Town Project v1.0
 # CS4050 Algorithms and Algorithm Analysis
 # This parses input on the command line and calls the necessary functions:
 
@@ -8,7 +8,7 @@ import getopt
 import sys
 from town_generations import *
 
-VERSION = str(0.9)
+VERSION = str(1.0)
 
 
 def main(argsv):
@@ -16,7 +16,7 @@ def main(argsv):
     current_mode = "d"
 
     try:
-        arguments, values = getopt.getopt(argsv, "sac::r:w:e:p:vh")
+        arguments, values = getopt.getopt(argsv, "sacr:w:e:p:vh")
 
         for currentArgument, currentValue in arguments:
 
@@ -29,7 +29,7 @@ def main(argsv):
                 current_town.display_town_alt()
 
             elif currentArgument in ("-c", "--Create"):
-                current_town = random_town(int(currentValue), int(currentValue) * 2)
+                current_town = random_town(10, 21)
 
             elif currentArgument in ("-r", "--Read_Town"):
                 current_town = read_town(currentValue)

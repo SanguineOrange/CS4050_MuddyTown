@@ -1,5 +1,5 @@
 # Cameron Colliver
-# Muddy Town Project v0.9
+# Muddy Town Project v1.0
 # CS4050 Algorithms and Algorithm Analysis
 # This file contains all necessary functions for:
 #       1. town generation
@@ -19,6 +19,7 @@ def random(seed) -> int:
 
     seed = (multiplier * seed + increment) % modulus
     return seed
+
 
 # Read town from a file
 def read_town(filename) -> Town:
@@ -167,21 +168,19 @@ def random_town(num_houses, num_roads) -> Town:
 
         # if town is not connected it's invalid
         try:
-            if check_connectivity(new_houses):
+            if check_connectivity(new_houses) and len(new_houses) == num_houses and len(unpaved_roads) == num_roads:
                 seed += 1
                 # Was getting an out of bounds error during printing
                 # Adding a try-catch block during generation seems to have fixed it
                 for road in unpaved_roads:
-                    valid_check = ([str(road[0]),
-                          new_houses[road[1]].name,
-                          new_houses[road[2]].name ])
-            invalid = False
+                    valid_road = ('"' + str(road[0]) + ", " + '"' +
+                      new_houses[road[1]].name + '", "' +
+                      new_houses[road[2]].name + '"')
+                new_random_town = Town("Town " + str(seed), unpaved_roads, new_houses, house_key)
+                return new_random_town
+
         except IndexError:
             invalid = True
-
-
-    new_random_town = Town("Random Town", unpaved_roads, new_houses, house_key)
-    return new_random_town
 
 
 # Check for connection validation using Breadth-first method

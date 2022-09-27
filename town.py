@@ -1,5 +1,5 @@
 # Cameron Colliver
-# Muddy Town Project v0.9
+# Muddy Town Project v1.0
 # CS4050 Algorithms and Algorithm Analysis
 # This file contains the town object as well as methods for:
 #       1. Write/Display town in standard or alternate format
@@ -28,11 +28,11 @@ class Town:
     def display_town(self):
         print(self.townName)
         for road in self.unpaved_list:
-            print('"' + str(road[0]) + ", " + '"' +
+            print(str(road[0]) + ", " + '"' +
                   self.houses[road[1]].name + '", "' +
                   self.houses[road[2]].name + '"')
 
-    # Display town in alternate format
+# Display town in alternate format
     def display_town_alt(self):
         print("Town: " + self.townName)
         print("Number of buildings: " + str(len(self.houses)))
@@ -57,8 +57,8 @@ class Town:
             fp.write(self.townName + '\n')
 
             for road in self.unpaved_list:
-                fp.write('"' + str(road[0]) + '", "' +
-                         self.houses[road[1]].name + '", "' +
+                fp.write(str(road[0]) + '","' +
+                         self.houses[road[1]].name + '","' +
                          self.houses[road[2]].name + '"\n')
 
         # else write in alternate format
@@ -74,7 +74,6 @@ class Town:
                 fp.write(self.houses[road[1]].name + ", " +
                       self.houses[road[2]].name + ", " +
                       str(road[0]) + '\n')
-
 
     # Find root of tree, adapted from Skeina's C code
     def find(self, parent, i):
@@ -144,7 +143,7 @@ class Town:
                 houses[houseX].add_connection(houses[houseY])
                 houses[houseY].add_connection(houses[houseX])
             self.paved_houses = houses.copy()
-        # Else simply return the minimum cost
+        # Else simply reurn the minimum cost
         else:
             return minimum_cost
 
@@ -166,17 +165,13 @@ class Town:
         paved_roads = []
         total_cost = 0
 
-        if self.townName != fp.readline().replace('\n',''):
-            print("Warning! Town data does not match paving data stored on this file! +"
-                  "\nThis might mean the paving plan is invalid!")
-
         while True:
             read_paving = fp.readline()
             if not read_paving:
                 break
             read_paving = read_paving.replace('"', '')
             read_paving = read_paving.replace("\n", '')
-            split_string = read_paving.split(", ", 1)
+            split_string = read_paving.split(",", 1)
 
             try:
                 index_x = self.house_key.index(split_string[0])
@@ -208,7 +203,7 @@ class Town:
         else:
             print("Minimum cost for this plan is " + str(self.total_cost))
             for road in self.paved_list:
-                print('"' + str(road[0]) + '", "' +
+                print('"' + str(road[0]) + '","' +
                       str(road[1]) + '"')
 
     # Write the paving plan in standard format
@@ -219,5 +214,5 @@ class Town:
             fp = open(filename, "w")
         fp.write(self.townName + '\n')
         for road in self.paved_list:
-            fp.write('"' + road[0] + '", "' +
+            fp.write('"' + road[0] + '","' +
                      road[1] + '"\n')
