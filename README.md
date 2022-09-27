@@ -35,3 +35,10 @@ commands should resemble ** python processtown.py -arguments** where -arguments 
   
 #### -h
   Displays all commands in the terminal
+
+### Example:
+*python processtown.py -caw town_data.dat*
+This will create a new town and save that data to a new data file called town_data
+
+*python processtown.py -r town_data.dat -p paving_plan.dat -e paving_plan.dat*
+This will read the town information off of town_data.dat and generate a paving plan, then evalue and display it
