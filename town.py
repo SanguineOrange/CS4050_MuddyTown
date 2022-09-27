@@ -177,7 +177,6 @@ class Town:
                 index_x = self.house_key.index(split_string[0])
                 index_y = self.house_key.index(split_string[1])
             except ValueError:
-                print("Error! Town data does not match paving data stored on this file!")
                 return
 
             # Check for duplicate streets, make sure to only append lowest weight

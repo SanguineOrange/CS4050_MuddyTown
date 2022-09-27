@@ -12,7 +12,7 @@ VERSION = str(1.0)
 
 
 def main(argsv):
-    current_town = read_town("towndata")
+    current_town = read_town("MiniTown")
     current_mode = "d"
 
     try:
